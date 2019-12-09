@@ -34,6 +34,10 @@ char *cfg_authkey_file = NULL;
 
 char *cfg_config_file = NULL;
 
+char *scripts_cfg_user_server = NULL;
+char *scripts_cfg_user_aid = NULL;
+char *scripts_cfg_user_pass = NULL;
+
 char cfg_client_GUID[SUPLA_GUID_SIZE];
 char cfg_client_AuthKey[SUPLA_AUTHKEY_SIZE];
 
@@ -43,12 +47,12 @@ unsigned char clientcfg_init(int argc, char *argv[]) {
   char *buffer;
   char GUIDHEX[SUPLA_GUID_HEXSIZE + 1];
 
-  for (a = 0; a < argc; a++) {
-    if (strcmp("-config", argv[a]) == 0 && a < argc - 1) {
-      cfg_config_file = strdup(argv[a + 1]);
-      a++;
-    }
-  }
+  cfg_config_file = strdup(argv[1]);
+  scripts_cfg_user_server = strdup(argv[2]);
+  scripts_cfg_user_aid = strdup(argv[3]);
+  scripts_cfg_user_pass = strdup(argv[4]);
+
+  supla_log(LOG_INFO, cfg_config_file);
 
   if (cfg_id_file == NULL) {
     pw = getpwuid(getuid());  // NOLINT
@@ -68,7 +72,7 @@ unsigned char clientcfg_init(int argc, char *argv[]) {
       }
     }
 
-    if (snprintf(buffer, a, "%s/.supla-mqtt-client/id", pw->pw_dir) < 1) {
+    if (snprintf(buffer, a, "%s/.supla-mqtt-client/id.%s.%s", pw->pw_dir, scripts_cfg_user_server, scripts_cfg_user_aid) < 1) {
       free(buffer);
       return 0;
     }

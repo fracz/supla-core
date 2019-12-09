@@ -41,6 +41,7 @@ class client_config {
   bool mqtt_publish_events;
   uint16_t mqtt_protocol_version;
 
+public:
   std::string supla_host;
   uint16_t supla_port;
   uint32_t supla_accessid;
@@ -48,6 +49,7 @@ class client_config {
   std::string supla_email;
   uint16_t supla_protocol_version;
 
+private:
   std::vector<client_command *> commands;
   std::vector<client_state *> states;
 

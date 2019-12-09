@@ -131,7 +131,7 @@ void *client_loop_init(void *sthread, client_config *config) {
   scc.protocol_version = config->getSuplaProtocolVersion();
   supla_log(LOG_DEBUG, "SUPLA PROTOCOL VERSION %d", scc.protocol_version);
 
-  snprintf(scc.Name, SUPLA_CLIENT_NAME_MAXSIZE, "Supla MQTT Proxy");
+  snprintf(scc.Name, SUPLA_CLIENT_NAME_MAXSIZE, "Supla Scripts Client");
   snprintf(scc.SoftVer, SUPLA_SOFTVER_MAXSIZE, "1.0-Linux");
 
   snprintf(scc.Email, SUPLA_EMAIL_MAXSIZE, config->getSuplaEmail().c_str());
@@ -171,6 +171,9 @@ void *client_loop_init(void *sthread, client_config *config) {
 void client_loop(void *user_data, void *sthread) {
   config = new client_config();
   config->load(cfg_config_file);
+  config->supla_host = scripts_cfg_user_server;
+  config->supla_accessid = atoi(scripts_cfg_user_aid);
+  config->supla_password = scripts_cfg_user_pass;
   sclient = client_loop_init(sthread, config);
 
   if (sclient == NULL) {

@@ -29,6 +29,10 @@ extern char *cfg_id_file;
 
 extern char *cfg_config_file;
 
+extern char *scripts_cfg_user_server;
+extern char *scripts_cfg_user_aid;
+extern char *scripts_cfg_user_pass;
+
 extern char cfg_client_GUID[SUPLA_GUID_SIZE];
 extern char cfg_client_AuthKey[SUPLA_AUTHKEY_SIZE];
 
