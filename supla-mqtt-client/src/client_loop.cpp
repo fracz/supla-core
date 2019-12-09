@@ -186,13 +186,13 @@ void client_loop(void *user_data, void *sthread) {
   vector<std::string> topics;
   config->getTopicsToSubscribe(&topics);
 
-  mqtt_client_init(config->getMqttHost(), config->getMqttPort(),
-                   config->getMqttUsername(), config->getMqttPassword(),
-                   config->getMqttClientName(),
-                   config->getMqttProtocolVersion(), topics, mqtt_callback);
+  // mqtt_client_init(config->getMqttHost(), config->getMqttPort(),
+  //                  config->getMqttUsername(), config->getMqttPassword(),
+  //                  config->getMqttClientName(),
+  //                  config->getMqttProtocolVersion(), topics, mqtt_callback);
 
   while (sthread_isterminated(sthread) == 0) {
-    supla_log(LOG_INFO, "Connecting...");
+    supla_log(LOG_INFO, "Connecting client...");
 
     if (0 == supla_client_connect(sclient)) {
       usleep(2000000);
@@ -205,7 +205,7 @@ void client_loop(void *user_data, void *sthread) {
 
   if (user_data) *(void **)user_data = NULL;
 
-  mqtt_client_free();
+ // mqtt_client_free();
   supla_client_free(sclient);
 
   if (channels != NULL) delete channels;

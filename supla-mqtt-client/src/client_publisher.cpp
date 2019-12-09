@@ -88,7 +88,7 @@ void publish_mqtt_message_for_channel(client_device_channel* channel) {
                                   std::to_string(temp));
           replace_string_in_place(&payload, "$humidity$", std::to_string(hum));
 
-          publish = true;
+          publish = false;
         }
       } break;
       case SUPLA_CHANNELFNC_WINDSENSOR:
@@ -211,7 +211,7 @@ void publish_mqtt_message_for_channel(client_device_channel* channel) {
                                   std::to_string(ic_ev.calculated_value));
           replace_string_in_place(&payload, "$unit$", custom_unit);
 
-          publish = true;
+          publish = false;
 
         } else if (srpc_evtool_v1_extended2emextended(value, &em_ev) == 1) {
           std::string currency(em_ev.currency, 3);
@@ -270,13 +270,15 @@ void publish_mqtt_message_for_channel(client_device_channel* channel) {
             }
           }
 
-          publish = true;
+          publish = false;
         }
         free(value);
       } break;
     }
     if (publish) {
-      mqtt_client_publish(topic.c_str(), payload.c_str(), 1, 0);
+      // supla_log(LOG_INFO, topic.c_str());
+      supla_log(LOG_INFO, payload.c_str());
+    //  mqtt_client_publish(topic.c_str(), payload.c_str(), 1, 0);
     }
   }
 }
