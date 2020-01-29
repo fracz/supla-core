@@ -18,6 +18,7 @@
 
 #include "client_publisher.h"
 #include <string>
+#include "HTTPRequest.hpp"
 
 void publish_mqtt_message_for_event(client_config* config,
                                     TSC_SuplaEvent* event) {
@@ -60,7 +61,18 @@ void publish_mqtt_message_for_event(client_config* config,
   replace_string_in_place(&payload, "$SenderName$", event->SenderName);
   replace_string_in_place(&payload, "$EventType$", eventType);
 
-  mqtt_client_publish(topic.c_str(), payload.c_str(), 0, 0);
+  http::Request request("http://suplascripts.local/api/event-feed");
+      
+      /*const http::Response postResponse =
+          request.send("POST", payload.c_str(),
+                       {"Content-Type: application/json"});
+      supla_log(LOG_INFO, std::to_string(postResponse.status).c_str());
+      supla_log(LOG_INFO, std::string(postResponse.body.begin(),
+                               postResponse.body.end()).c_str());
+*/
+supla_log(LOG_INFO, "Event");
+supla_log(LOG_INFO, topic.c_str());
+supla_log(LOG_INFO, payload.c_str());
 }
 
 void publish_mqtt_message_for_channel(client_device_channel* channel) {
@@ -276,9 +288,18 @@ void publish_mqtt_message_for_channel(client_device_channel* channel) {
       } break;
     }
     if (publish) {
+      http::Request request("http://suplascripts.local/api/event-feed");
+      
+      const http::Response postResponse =
+          request.send("POST", payload.c_str(),
+                       {"Content-Type: application/json"});
+      supla_log(LOG_INFO, std::to_string(postResponse.status).c_str());
+      supla_log(LOG_INFO, std::string(postResponse.body.begin(),
+                               postResponse.body.end()).c_str());
+
       // supla_log(LOG_INFO, topic.c_str());
-      supla_log(LOG_INFO, payload.c_str());
-    //  mqtt_client_publish(topic.c_str(), payload.c_str(), 1, 0);
+      // supla_log(LOG_INFO, payload.c_str());
+      //  mqtt_client_publish(topic.c_str(), payload.c_str(), 1, 0);
     }
   }
 }

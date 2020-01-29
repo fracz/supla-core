@@ -52,8 +52,6 @@ unsigned char clientcfg_init(int argc, char *argv[]) {
   scripts_cfg_user_aid = strdup(argv[3]);
   scripts_cfg_user_pass = strdup(argv[4]);
 
-  supla_log(LOG_INFO, cfg_config_file);
-
   if (cfg_id_file == NULL) {
     pw = getpwuid(getuid());  // NOLINT
     a = strlen(pw->pw_dir) + 50;
