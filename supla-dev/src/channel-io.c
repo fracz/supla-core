@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "channel-io.h"
 #include "eh.h"
@@ -301,7 +302,25 @@ char channelio_read_temp_and_humidity(int type, char *w1,
           break;
         case SUPLA_CHANNELTYPE_DHT22:
         case SUPLA_CHANNELTYPE_AM2302:
-          read_result = w1_dht_read(w1, &temp, &humidity, 22);
+          read_result = 1;//w1_dht_read(w1, &temp, &humidity, 22);
+
+          FILE* file;
+          char filename[100];
+          snprintf(filename, sizeof(filename), "sensor_%s.txt", w1);
+
+          file = fopen(filename, "r");
+          if (!file) return -1;
+
+         char line[100];
+         if (fgets(line, sizeof(line), file) != NULL) {
+          temp = atof(line);
+         }
+         if (fgets(line, sizeof(line), file) != NULL) {
+          humidity = atof(line);
+         }
+
+          fclose(file);
+
           break;
       }
 
