@@ -306,7 +306,7 @@ char channelio_read_temp_and_humidity(int type, char *w1,
 
           FILE* file;
           char filename[100];
-          snprintf(filename, sizeof(filename), "sensor_%s.txt", w1);
+          snprintf(filename, sizeof(filename), "/home/pi/ble/sensor_%s.txt", w1);
 
           file = fopen(filename, "r");
           if (!file) return -1;
