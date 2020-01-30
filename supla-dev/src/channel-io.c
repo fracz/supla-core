@@ -39,7 +39,7 @@
 #ifdef __SINGLE_THREAD
 #define W1_TEMP_MINDELAY_SEC 120
 #else
-#define W1_TEMP_MINDELAY_SEC 30
+#define W1_TEMP_MINDELAY_SEC 10
 #endif
 #define MCP23008_MINDELAY_SEC 1
 
