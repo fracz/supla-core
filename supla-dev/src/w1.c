@@ -104,3 +104,21 @@ char w1_dht_read(const char *w1, double *temp, double *humidity,
   return 0;
 #endif
 }
+
+char file_read_sensor(char *filepath, double *line1, double *line2) {
+    FILE* file;
+
+    file = fopen(filepath, "r");
+    if (!file) return -1;
+
+    char line[100];
+    if (fgets(line, sizeof(line), file) != NULL) {
+      *line1 = atof(line);
+    }
+    if (fgets(line, sizeof(line), file) != NULL) {
+      *line2 = atof(line);
+    }
+
+    fclose(file);
+    return 1;
+}

@@ -272,7 +272,7 @@ void channelio_gpio_port_init(TDeviceChannel *channel,
   }
 }
 
-char channelio_read_temp_and_humidity(int type, char *w1,
+char channelio_read_temp_and_humidity(int type, char *filepath,
                                       TChannelW1TempValue *w1_value,
                                       char log_err) {
   double temp, humidity;
@@ -285,7 +285,7 @@ char channelio_read_temp_and_humidity(int type, char *w1,
       type != SUPLA_CHANNELTYPE_AM2302)
     return 0;
 
-  if (w1 != NULL || type != SUPLA_CHANNELTYPE_THERMOMETERDS18B20) {
+  if (filepath != NULL || type != SUPLA_CHANNELTYPE_THERMOMETERDS18B20) {
     gettimeofday(&now, NULL);
 
     lck_lock(w1_value->lck);
@@ -293,36 +293,7 @@ char channelio_read_temp_and_humidity(int type, char *w1,
     if (now.tv_sec - w1_value->last_tv.tv_sec >= W1_TEMP_MINDELAY_SEC) {
       w1_value->last_tv = now;
 
-      switch (type) {
-        case SUPLA_CHANNELTYPE_THERMOMETERDS18B20:
-          read_result = w1_ds18b20_get_temp(w1, &temp);
-          break;
-        case SUPLA_CHANNELTYPE_DHT11:
-          read_result = w1_dht_read(w1, &temp, &humidity, 11);
-          break;
-        case SUPLA_CHANNELTYPE_DHT22:
-        case SUPLA_CHANNELTYPE_AM2302:
-          read_result = 1;//w1_dht_read(w1, &temp, &humidity, 22);
-
-          FILE* file;
-          char filename[100];
-          snprintf(filename, sizeof(filename), "/home/pi/ble/sensor_%s.txt", w1);
-
-          file = fopen(filename, "r");
-          if (!file) return -1;
-
-         char line[100];
-         if (fgets(line, sizeof(line), file) != NULL) {
-          temp = atof(line);
-         }
-         if (fgets(line, sizeof(line), file) != NULL) {
-          humidity = atof(line);
-         }
-
-          fclose(file);
-
-          break;
-      }
+      read_result = file_read_sensor(filepath, &temp, &humidity);
 
       if (read_result == 1) {
         if (w1_value->temp != temp) {
@@ -341,7 +312,7 @@ char channelio_read_temp_and_humidity(int type, char *w1,
         w1_value->humidity = -1;
 
         if (log_err == 1)
-          supla_log(LOG_ERR, "Can't read 1-wire device %s", w1 ? w1 : "");
+          supla_log(LOG_ERR, "Can't read file %s", filepath ? filepath : "");
       }
     }
 

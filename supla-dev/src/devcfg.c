@@ -108,7 +108,9 @@ void devcfg_channel_cfg(const char *section, const char *name,
     channelio_set_mcp23008_gpio_val(number, atoi(value) % 255);
   } else if (strcasecmp(name, "mcp_gpio_port") == 0) {
     channelio_set_mcp23008_gpio_port(number, atoi(value) % MCP23008_MAX_GPIO);
-  }
+  } else if ( strcasecmp(name, "file") == 0  && strlen(value) > 0 ) {
+		channelio_set_w1(number, value);
+	}
 }
 
 unsigned char devcfg_init(int argc, char *argv[]) {
