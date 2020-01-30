@@ -285,7 +285,7 @@ char channelio_read_temp_and_humidity(int type, char *filepath,
       type != SUPLA_CHANNELTYPE_AM2302)
     return 0;
 
-  if (filepath != NULL || type != SUPLA_CHANNELTYPE_THERMOMETERDS18B20) {
+  if (filepath != NULL) {
     gettimeofday(&now, NULL);
 
     lck_lock(w1_value->lck);
