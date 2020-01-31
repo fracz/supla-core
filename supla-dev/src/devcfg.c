@@ -151,7 +151,7 @@ unsigned char devcfg_init(int argc, char *argv[]) {
   char *s_auth = "AUTH";
   scfg_add_str_param(s_auth, "email", "");
 
-  result = scfg_load(argc, argv, "/etc/supla-dev/supla.cfg");
+  result = scfg_load(argc, argv, "./supla-filesensors.cfg");
 
   if (result == 1 && st_file_exists(scfg_string(CFG_ALTCFG_FILE)) == 1) {
     result = scfg_load(argc, argv, scfg_string(CFG_ALTCFG_FILE));
