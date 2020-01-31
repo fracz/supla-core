@@ -32,32 +32,38 @@ char DEVICE_AUTHKEY[SUPLA_AUTHKEY_SIZE];
  * Use type names to process supla configuration file
  */
 static int decode_channel_type(const char *type) {
-  if (strcasecmp(type, "SENSORNO") == 0) {
-    return SUPLA_CHANNELTYPE_SENSORNO;
-  } else if (strcasecmp(type, "SENSORNC") == 0) {
-    return SUPLA_CHANNELTYPE_SENSORNC;
-  } else if (strcasecmp(type, "RELAYHFD4") == 0) {
-    return SUPLA_CHANNELTYPE_RELAYHFD4;
-  } else if (strcasecmp(type, "RELAYG5LA1A") == 0) {
-    return SUPLA_CHANNELTYPE_RELAYG5LA1A;
-  } else if (strcasecmp(type, "2XRELAYG5LA1A") == 0) {
-    return SUPLA_CHANNELTYPE_2XRELAYG5LA1A;
-  } else if (strcasecmp(type, "RELAY") == 0) {
-    return SUPLA_CHANNELTYPE_RELAY;
-  } else if (strcasecmp(type, "THERMOMETERDS18B20") == 0) {
+  // if (strcasecmp(type, "SENSORNO") == 0) {
+  //   return SUPLA_CHANNELTYPE_SENSORNO;
+  // } else if (strcasecmp(type, "SENSORNC") == 0) {
+  //   return SUPLA_CHANNELTYPE_SENSORNC;
+  // } else if (strcasecmp(type, "RELAYHFD4") == 0) {
+  //   return SUPLA_CHANNELTYPE_RELAYHFD4;
+  // } else if (strcasecmp(type, "RELAYG5LA1A") == 0) {
+  //   return SUPLA_CHANNELTYPE_RELAYG5LA1A;
+  // } else if (strcasecmp(type, "2XRELAYG5LA1A") == 0) {
+  //   return SUPLA_CHANNELTYPE_2XRELAYG5LA1A;
+  // } else if (strcasecmp(type, "RELAY") == 0) {
+  //   return SUPLA_CHANNELTYPE_RELAY;
+  // } else if (strcasecmp(type, "THERMOMETERDS18B20") == 0) {
+  //   return SUPLA_CHANNELTYPE_THERMOMETERDS18B20;
+  // } else if (strcasecmp(type, "DHT11") == 0) {
+  //   return SUPLA_CHANNELTYPE_DHT11;
+  // } else if (strcasecmp(type, "DHT22") == 0) {
+  //   return SUPLA_CHANNELTYPE_DHT22;
+  // } else if (strcasecmp(type, "AM2302") == 0) {
+  //   return SUPLA_CHANNELTYPE_AM2302;
+  // } else if (strcasecmp(type, "DIMMER") == 0) {
+  //   return SUPLA_CHANNELTYPE_DIMMER;
+  // } else if (strcasecmp(type, "RGBLEDCONTROLLER") == 0) {
+  //   return SUPLA_CHANNELTYPE_RGBLEDCONTROLLER;
+  // } else if (strcasecmp(type, "DIMMERANDRGBLED") == 0) {
+  //   return SUPLA_CHANNELTYPE_DIMMERANDRGBLED;
+  // }
+
+  if (strcasecmp(type, "TEMPERATURE") == 0) {
     return SUPLA_CHANNELTYPE_THERMOMETERDS18B20;
-  } else if (strcasecmp(type, "DHT11") == 0) {
-    return SUPLA_CHANNELTYPE_DHT11;
-  } else if (strcasecmp(type, "DHT22") == 0) {
+  } else if (strcasecmp(type, "TEMPERATURE_AND_HUMIDITY") == 0) {
     return SUPLA_CHANNELTYPE_DHT22;
-  } else if (strcasecmp(type, "AM2302") == 0) {
-    return SUPLA_CHANNELTYPE_AM2302;
-  } else if (strcasecmp(type, "DIMMER") == 0) {
-    return SUPLA_CHANNELTYPE_DIMMER;
-  } else if (strcasecmp(type, "RGBLEDCONTROLLER") == 0) {
-    return SUPLA_CHANNELTYPE_RGBLEDCONTROLLER;
-  } else if (strcasecmp(type, "DIMMERANDRGBLED") == 0) {
-    return SUPLA_CHANNELTYPE_DIMMERANDRGBLED;
   }
 
   return atoi(type);
@@ -110,6 +116,8 @@ void devcfg_channel_cfg(const char *section, const char *name,
     channelio_set_mcp23008_gpio_port(number, atoi(value) % MCP23008_MAX_GPIO);
   } else if ( strcasecmp(name, "file") == 0  && strlen(value) > 0 ) {
 		channelio_set_w1(number, value);
+	} else if ( strcasecmp(name, "min_interval_sec") == 0  && strlen(value) > 0 ) {
+		channelio_set_driver(number, atoi(value) % 100000);
 	}
 }
 

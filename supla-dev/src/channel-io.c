@@ -274,7 +274,7 @@ void channelio_gpio_port_init(TDeviceChannel *channel,
 
 char channelio_read_temp_and_humidity(int type, char *filepath,
                                       TChannelW1TempValue *w1_value,
-                                      char log_err) {
+                                      char log_err, int interval_sec) {
   double temp, humidity;
   struct timeval now;
   char result = 0;
@@ -290,7 +290,9 @@ char channelio_read_temp_and_humidity(int type, char *filepath,
 
     lck_lock(w1_value->lck);
 
-    if (now.tv_sec - w1_value->last_tv.tv_sec >= W1_TEMP_MINDELAY_SEC) {
+    int min_interval = interval_sec >= 0 ? interval_sec : 10;
+
+    if (now.tv_sec - w1_value->last_tv.tv_sec >= min_interval) {
       w1_value->last_tv = now;
 
       read_result = file_read_sensor(filepath, &temp, &humidity);
@@ -440,7 +442,7 @@ void channelio_channel_init(void) {
                                channelio_gpio_in(channel, 2));
 
     channelio_read_temp_and_humidity(channel->type, channel->w1,
-                                     &channel->w1_value, 1);
+                                     &channel->w1_value, 1, channel->driver);
 
     channelio_read_rgbw_values(channel->type, &channel->rgbw_value);
 
@@ -526,6 +528,16 @@ void channelio_set_gpio1(unsigned char number, unsigned char gpio1) {
   channel = channelio_find(number, 1);
 
   if (channel != NULL) channel->gpio1 = gpio1;
+}
+
+void channelio_set_driver(unsigned char number, int driver) {
+  TDeviceChannel *channel;
+
+  if (cio == NULL || cio->initialized == 1) return;
+
+  channel = channelio_find(number, 1);
+
+  if (channel != NULL) channel->driver = driver;
 }
 
 void channelio_set_gpio2(unsigned char number, unsigned char gpio2) {
@@ -836,7 +848,7 @@ void channelio_w1_iterate(void) {
   for (a = 0; a < cio->channel_count; a++) {
     if (channelio_read_temp_and_humidity(cio->channels[a].type,
                                          cio->channels[a].w1,
-                                         &cio->channels[a].w1_value, 0) == 1)
+                                         &cio->channels[a].w1_value, 0, cio->channels[a].driver) == 1)
       channelio_raise_valuechanged(&cio->channels[a]);
   }
 }
