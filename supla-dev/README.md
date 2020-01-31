@@ -1,8 +1,9 @@
-# SUPLA-DEV
+# SUPLA-FILESENSORS
 
-Make a SUPLA-managed device from your RaspberryPI (or any other linux).
+Sources for [`supla-filesensors`](https://github.com/fracz/supla-filesensors) project.
+If you want to launch it - go there :-)
 
-## Installation
+## Building
 
 ```
 sudo apt-get install libssl-dev
@@ -18,20 +19,5 @@ Edit `supla.cfg` to match your needs.
 
 ```
 cd supla-core/supla-dev/Release
-./supla-dev -c ./supla.cfg
-```
-
-## Configure autostart
-
-TODO
-
-## Upgrade
-
-Stop `supla-dev` if running and
-
-```
-cd supla-core
-git pull
-cd supla-dev/Release
-make all
+./supla-filesensors -c ./supla.cfg
 ```
