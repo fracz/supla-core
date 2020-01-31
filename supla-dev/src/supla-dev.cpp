@@ -53,6 +53,8 @@ int main(int argc, char* argv[]) {
   supla_log(LOG_DEBUG, "SINGLE THREAD MODE");
 #endif
 
+supla_log(LOG_INFO, "SUPLA-FILESENSORS v1.0");
+
   if (channelio_init() != 1) {  // Before cfg init
     supla_log(LOG_ERR, "Channel I/O init error!");
     return EXIT_FAILURE;
