@@ -2,4 +2,4 @@ Debug/supla-dev
 Release/supla-dev
 Debug/supla-filesensors
 Release/supla-filesensors
-supla.cfg
+Release/*.cfg
