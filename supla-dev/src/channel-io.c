@@ -230,6 +230,7 @@ char channelio_allowed_type(int type) {
     case SUPLA_CHANNELTYPE_DIMMER:
     case SUPLA_CHANNELTYPE_RGBLEDCONTROLLER:
     case SUPLA_CHANNELTYPE_DIMMERANDRGBLED:
+    case SUPLA_CHANNELTYPE_HUMIDITYSENSOR:
       return 1;
   }
 
@@ -282,8 +283,11 @@ char channelio_read_temp_and_humidity(int type, char *filepath,
 
   if (type != SUPLA_CHANNELTYPE_THERMOMETERDS18B20 &&
       type != SUPLA_CHANNELTYPE_DHT11 && type != SUPLA_CHANNELTYPE_DHT22 &&
-      type != SUPLA_CHANNELTYPE_AM2302)
+      type != SUPLA_CHANNELTYPE_AM2302 &&
+      type != SUPLA_CHANNELTYPE_HUMIDITYSENSOR)
     return 0;
+
+
 
   if (filepath != NULL) {
     gettimeofday(&now, NULL);
@@ -294,7 +298,6 @@ char channelio_read_temp_and_humidity(int type, char *filepath,
 
     if (now.tv_sec - w1_value->last_tv.tv_sec >= min_interval) {
       w1_value->last_tv = now;
-
       read_result = file_read_sensor(filepath, &temp, &humidity);
 
       if (read_result == 1) {
@@ -660,6 +663,17 @@ char channelio_get_cvalue(TDeviceChannel *channel,
 
       lck_lock(channel->w1_value.lck);
       memcpy(value, &channel->w1_value.temp, sizeof(double));
+      lck_unlock(channel->w1_value.lck);
+
+      return 1;
+    }
+
+    if (channel->type == SUPLA_CHANNELTYPE_HUMIDITYSENSOR) {
+      assert(sizeof(double) <= SUPLA_CHANNELVALUE_SIZE);
+
+      lck_lock(channel->w1_value.lck);
+      int h = channel->w1_value.humidity * 1000.00;
+      memcpy(&value[4], &h, 4);
       lck_unlock(channel->w1_value.lck);
 
       return 1;
