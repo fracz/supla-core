@@ -113,6 +113,9 @@ char file_read_sensor(char *filepath, double *line1, double *line2) {
 
     char line[100];
     if (fgets(line, sizeof(line), file) != NULL) {
+      if (strlen(line) == 0) {
+        return -1;
+      }
       *line1 = atof(line);
     }
     else {
