@@ -115,6 +115,9 @@ char file_read_sensor(char *filepath, double *line1, double *line2) {
     if (fgets(line, sizeof(line), file) != NULL) {
       *line1 = atof(line);
     }
+    else {
+      return -1;
+    }
     if (fgets(line, sizeof(line), file) != NULL) {
       *line2 = atof(line);
     }
