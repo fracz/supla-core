@@ -276,7 +276,7 @@ void channelio_gpio_port_init(TDeviceChannel *channel,
 char channelio_read_temp_and_humidity(int type, char *filepath,
                                       TChannelW1TempValue *w1_value,
                                       char log_err, int interval_sec) {
-  double temp, humidity;
+  double temp = 0, humidity = 0;
   struct timeval now;
   char result = 0;
   char read_result = 0;
