@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
   supla_log(LOG_DEBUG, "SINGLE THREAD MODE");
 #endif
 
-printf("SUPLA-FILESENSORS v1.0.1\n");
+printf("SUPLA-FILESENSORS v%s\n", SOFTWARE_VERSION);
 
 for (int i = 0; i < argc; i++) {
   if (strcmp("-v", argv[i]) == 0) {
