@@ -72,6 +72,12 @@ static int decode_channel_type(const char *type) {
     return SUPLA_CHANNELTYPE_WINDSENSOR;
   } else if (strcasecmp(type, "PRESSURESENSOR") == 0) {
     return SUPLA_CHANNELTYPE_PRESSURESENSOR;
+  } else if (strcasecmp(type, "DISTANCESENSOR") == 0) {
+    return SUPLA_CHANNELTYPE_DISTANCESENSOR;
+  } else if (strcasecmp(type, "RAINSENSOR") == 0) {
+    return SUPLA_CHANNELTYPE_RAINSENSOR;
+  } else if (strcasecmp(type, "WEIGHTSENSOR") == 0) {
+    return SUPLA_CHANNELTYPE_WEIGHTSENSOR;
   }
 
   return atoi(type);
