@@ -654,7 +654,8 @@ char channelio_get_cvalue(TDeviceChannel *channel,
       return 1;
     }
 
-    if (channel->type == SUPLA_CHANNELTYPE_WINDSENSOR) {
+    if (channel->type == SUPLA_CHANNELTYPE_WINDSENSOR ||
+      channel->type == SUPLA_CHANNELTYPE_PRESSURESENSOR) {
       assert(sizeof(double) <= SUPLA_CHANNELVALUE_SIZE);
 
       lck_lock(channel->w1_value.lck);

@@ -70,6 +70,8 @@ static int decode_channel_type(const char *type) {
     return SUPLA_CHANNELTYPE_DHT22;
   } else if (strcasecmp(type, "WINDSENSOR") == 0) {
     return SUPLA_CHANNELTYPE_WINDSENSOR;
+  } else if (strcasecmp(type, "PRESSURESENSOR") == 0) {
+    return SUPLA_CHANNELTYPE_PRESSURESENSOR;
   }
 
   return atoi(type);
