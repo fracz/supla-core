@@ -281,14 +281,6 @@ char channelio_read_temp_and_humidity(int type, char *filepath,
   char result = 0;
   char read_result = 0;
 
-  if (type != SUPLA_CHANNELTYPE_THERMOMETERDS18B20 &&
-      type != SUPLA_CHANNELTYPE_DHT11 && type != SUPLA_CHANNELTYPE_DHT22 &&
-      type != SUPLA_CHANNELTYPE_AM2302 &&
-      type != SUPLA_CHANNELTYPE_HUMIDITYSENSOR)
-    return 0;
-
-
-
   if (filepath != NULL) {
     gettimeofday(&now, NULL);
 
