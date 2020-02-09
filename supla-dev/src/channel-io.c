@@ -274,7 +274,7 @@ void channelio_gpio_port_init(TDeviceChannel *channel,
   }
 }
 
-char channelio_read_temp_and_humidity(int type, char *filepath,
+char channelio_read_from_file(int type, char *filepath,
                                       TChannelW1TempValue *w1_value,
                                       char log_err, int interval_sec) {
   double temp = 0, humidity = 0;
@@ -437,7 +437,7 @@ void channelio_channel_init(void) {
       channelio_gpio_port_init(channel, &channel->gpio2_value, channel->gpio2,
                                channelio_gpio_in(channel, 2));
 
-    channelio_read_temp_and_humidity(channel->type, channel->w1,
+    channelio_read_from_file(channel->type, channel->w1,
                                      &channel->w1_value, 1, channel->driver);
 
     channelio_read_rgbw_values(channel->type, &channel->rgbw_value);
@@ -863,7 +863,7 @@ void channelio_w1_iterate(void) {
   int a;
 
   for (a = 0; a < cio->channel_count; a++) {
-    if (channelio_read_temp_and_humidity(cio->channels[a].type,
+    if (channelio_read_from_file(cio->channels[a].type,
                                          cio->channels[a].w1,
                                          &cio->channels[a].w1_value, 0, cio->channels[a].driver) == 1)
       channelio_raise_valuechanged(&cio->channels[a]);
