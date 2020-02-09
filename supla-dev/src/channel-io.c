@@ -231,6 +231,7 @@ char channelio_allowed_type(int type) {
     case SUPLA_CHANNELTYPE_RGBLEDCONTROLLER:
     case SUPLA_CHANNELTYPE_DIMMERANDRGBLED:
     case SUPLA_CHANNELTYPE_HUMIDITYSENSOR:
+    case SUPLA_CHANNELTYPE_WINDSENSOR:
       return 1;
   }
 
@@ -666,6 +667,16 @@ char channelio_get_cvalue(TDeviceChannel *channel,
       lck_lock(channel->w1_value.lck);
       int h = channel->w1_value.humidity * 1000.00;
       memcpy(&value[4], &h, 4);
+      lck_unlock(channel->w1_value.lck);
+
+      return 1;
+    }
+
+    if (channel->type == SUPLA_CHANNELTYPE_WINDSENSOR) {
+      assert(sizeof(double) <= SUPLA_CHANNELVALUE_SIZE);
+
+      lck_lock(channel->w1_value.lck);
+      memcpy(value, &channel->w1_value.temp, sizeof(double));
       lck_unlock(channel->w1_value.lck);
 
       return 1;

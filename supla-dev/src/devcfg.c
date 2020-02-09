@@ -68,6 +68,8 @@ static int decode_channel_type(const char *type) {
     return SUPLA_CHANNELTYPE_THERMOMETERDS18B20;
   } else if (strcasecmp(type, "TEMPERATURE_AND_HUMIDITY") == 0) {
     return SUPLA_CHANNELTYPE_DHT22;
+  } else if (strcasecmp(type, "WINDSENSOR") == 0) {
+    return SUPLA_CHANNELTYPE_WINDSENSOR;
   }
 
   return atoi(type);
