@@ -217,25 +217,7 @@ void channelio_free(void) {
 }
 
 char channelio_allowed_type(int type) {
-  switch (type) {
-    case SUPLA_CHANNELTYPE_RELAYHFD4:
-    case SUPLA_CHANNELTYPE_SENSORNO:
-    case SUPLA_CHANNELTYPE_SENSORNC:
-    case SUPLA_CHANNELTYPE_THERMOMETERDS18B20:
-    case SUPLA_CHANNELTYPE_RELAYG5LA1A:
-    case SUPLA_CHANNELTYPE_2XRELAYG5LA1A:
-    case SUPLA_CHANNELTYPE_DHT11:
-    case SUPLA_CHANNELTYPE_DHT22:
-    case SUPLA_CHANNELTYPE_AM2302:
-    case SUPLA_CHANNELTYPE_DIMMER:
-    case SUPLA_CHANNELTYPE_RGBLEDCONTROLLER:
-    case SUPLA_CHANNELTYPE_DIMMERANDRGBLED:
-    case SUPLA_CHANNELTYPE_HUMIDITYSENSOR:
-    case SUPLA_CHANNELTYPE_WINDSENSOR:
-      return 1;
-  }
-
-  return 0;
+  return 1;
 }
 
 void channelio_gpio_port_init(TDeviceChannel *channel,
