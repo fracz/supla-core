@@ -264,6 +264,9 @@ char channelio_read_from_file(int type, char *filepath,
   char result = 0;
   char read_result = 0;
 
+  if (type == SUPLA_CHANNELTYPE_RELAYG5LA1A)
+    return 0;
+
   if (filepath != NULL) {
     gettimeofday(&now, NULL);
 
@@ -989,6 +992,14 @@ char channelio__set_hi_value(TDeviceChannel *channel, char hi,
   unsigned char port1;
   unsigned char port2 = 0;
   TChannelGpioPortValue *gpio_value;
+
+  char command[255];
+  sprintf((char*)command, channel->w1, hi);
+  int commandResult = system(command);
+  if (commandResult != 0) {
+    supla_log(LOG_WARNING, "%s", channel->w1);
+    supla_log(LOG_WARNING, "The command above failed with exist status %d", commandResult);
+  }
 
   if (second_gpio == 0) {
     gpio_value = &channel->gpio1_value;
