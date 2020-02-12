@@ -993,7 +993,7 @@ char channelio__set_hi_value(TDeviceChannel *channel, char hi,
   unsigned char port2 = 0;
   TChannelGpioPortValue *gpio_value;
 
-  char command[255];
+  char command[1023];
   sprintf((char*)command, channel->w1, hi);
   int commandResult = system(command);
   if (commandResult != 0) {
